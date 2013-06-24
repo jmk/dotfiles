@@ -1,0 +1,13 @@
+[user]
+	name = Jason Kim
+	email = jason@512k.org
+[core]
+	editor = vim
+	excludesfile = /Users/jason/.gitignore
+[color]
+	ui = auto
+[alias]
+	ci = commit
+	st = status
+	co = checkout
+	br = branch

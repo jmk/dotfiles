@@ -1,0 +1,7 @@
+FontText: "Consolas,13,-1,5,50,0,0,0,0,0"
+Geometry: 1400x960+170+0
+Show.VerticalLine: True
+Accel.IgnoreWhitespace: "W"
+Accel.Exit: "Q"
+Command.Edit: "gvim"
+TabWidth: 4

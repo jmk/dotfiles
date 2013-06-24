@@ -1,0 +1,22 @@
+
+import os, readline, rlcompleter, atexit
+
+# tab completion
+if 'libedit' in readline.__doc__:
+    readline.parse_and_bind("bind ^I rl_complete")
+else:
+    readline.parse_and_bind("tab: complete")
+
+# history file
+history_file = os.path.join(os.environ['HOME'], '.python_history')
+try:
+    readline.read_history_file(history_file)
+except IOError:
+    pass
+
+readline.set_history_length(1000)
+atexit.register(readline.write_history_file, history_file)
+
+del os, readline, rlcompleter, atexit, history_file, __file__
+
+# vim: ft=python

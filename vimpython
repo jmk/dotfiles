@@ -1,0 +1,47 @@
+" vim: ft=python
+" python stuff for vim
+python << EOF
+
+import os, sys, vim
+
+_headers = ["h", "hpp", "hxx"]
+_sources = ["c", "cpp", "cxx", "cc", "m", "mm"]
+
+# A very simple function that switches between headers and source files.
+# Supports common C/C++ and ObjC/C++ file extensions, and always looks in the
+# same directory as the current file.
+def switchHeader():
+    path = vim.current.buffer.name
+
+    if (not path):
+        print >> sys.stderr, "No current file"
+        return
+
+    # Find the file extension (without the period).
+    (base, extension) = os.path.splitext(path)
+    extension = extension.replace(".", "")
+
+    # Try to figure out what we're looking for.
+    if (extension in _headers): 
+        targetExtensions = _sources
+    elif (extension in _sources):
+        targetExtensions = _headers
+    else:
+        print "No counterpart for .%s files" % extension
+        return
+
+    # Try each target extension until we find a file that exists.
+    for e in targetExtensions:
+        path = base + "." + e
+        if (os.path.isfile(path)):
+            # Escape spaces in the path for the vim command.
+            path = path.replace(" ", "\\ ")
+            vim.command(":e %s" % path)
+
+            # Success!
+            return
+
+    print >> sys.stderr, \
+          "No counterpart found for: %s" % vim.current.buffer.name
+
+EOF
