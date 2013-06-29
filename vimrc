@@ -99,6 +99,7 @@ au BufEnter   *.fs :set ft=glsl
 au BufEnter   *.sl :set ft=sl
 au BufEnter   *.pde :set ft=c   " for arduino
 au BufEnter   *.markdown,*.md :set ft=markdown tw=0
+au BufEnter   *.rib :set ts=4 nowrap
 au BufReadPre *.m,*.mm :set ft=objc
 
 if (has("mac"))
