@@ -99,7 +99,8 @@ au BufEnter   *.fs :set ft=glsl
 au BufEnter   *.sl :set ft=sl
 au BufEnter   *.pde :set ft=c   " for arduino
 au BufEnter   *.markdown,*.md :set ft=markdown tw=0
-au BufEnter   *.rib :set ts=4 nowrap
+au BufEnter   *.rib :set ts=4
+au BufEnter   *.slim :set ft=tcl
 au BufReadPre *.m,*.mm :set ft=objc
 
 if (has("mac"))
@@ -188,6 +189,9 @@ if has("python")
 else
     map <C-H> :e %:p:s/.h$/.__EXTN__/:s/.cpp$/.h/:s/.__EXTN__$/.cpp/<CR>
 endif
+
+" Don't wrap files with lots of data by default
+au FileType rib,menva set nowrap ts=4
 
 " Support doxygen three-slash comments
 au FileType c,cpp set comments^=:///
