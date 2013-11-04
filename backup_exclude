@@ -1,0 +1,24 @@
+####################################
+# exclusion list for rsync backups #
+####################################
+**/Cache/**
+**/Caches/**
+**/tmp/**
+*/.Trash
+*/.Trashes
+.Spotlight-*/
+/Network/*
+/Previous\ Systems.localized
+/afs/*
+/automount/*
+/cdrom/*
+/cores/*
+/dev/*
+/home/*
+/mnt/*
+/net/*
+/private/tmp/*
+/private/var/run/*
+/private/var/spool/postfix/*
+/private/var/vm/*
+/proc/*
