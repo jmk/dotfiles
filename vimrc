@@ -198,7 +198,7 @@ au FileType c,cpp set comments^=:///
 
 " Quick comment/uncomment (shift-c and shift-u)
 au FileType vim let b:comment_leader = '"'
-au FileType c,cpp,java,objc,javascript,sl let b:comment_leader = '//'
+au FileType c,cpp,cs,java,objc,javascript,sl let b:comment_leader = '//'
 au FileType sh,make,python,rib let b:comment_leader = '#'
 au FileType tex let b:comment_leader = '%'
 au FileType lua let b:comment_leader = '--'
