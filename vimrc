@@ -101,6 +101,7 @@ au BufEnter   *.pde :set ft=c   " for arduino
 au BufEnter   *.markdown,*.md :set ft=markdown tw=0
 au BufEnter   *.rib :set ts=4
 au BufEnter   *.slim :set ft=tcl
+au BufEnter   *.pro :set ft=confg   " for qmake project files
 au BufReadPre *.m,*.mm :set ft=objc
 
 if (has("mac"))
