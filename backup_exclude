@@ -1,12 +1,16 @@
 ####################################
 # exclusion list for rsync backups #
 ####################################
+/Users/*/Library/Logs
 **/Cache/**
 **/Caches/**
 **/tmp/**
 */.Trash
 */.Trashes
 .Spotlight-*/
+.MobileBackups
+.fseventsd/
+/.DocumentRevisions-V100/*
 /Network/*
 /Previous\ Systems.localized
 /afs/*
