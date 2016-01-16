@@ -1,0 +1,13 @@
+# vim: set ft=sh :
+# Color prompt
+function set_prompt ()
+{
+    local DEFAULT="\[\033[0;0m\]"
+    local CYAN="\[\033[0;36m\]"
+    local GREEN="\[\033[0;32m\]"
+    local RED="\[\033[0;31m\]"
+
+    PS1="\u@\h${GRAY}:${CYAN}\w${DEFAULT} $ "
+}
+
+set_prompt
