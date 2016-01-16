@@ -1,5 +1,15 @@
 # ls with colors
 alias ls="ls -G"
+alias ll="ls -l"
 
 # Prompt when deleting files
 alias rm="rm -i"
+
+# Shortcuts
+alias vi="vim"
+alias g="grep"
+alias gs="git status"
+
+# Spotlight
+# Note: append wc to query for case insensitivity
+alias mdlocate="mdfind -name \"$@\""
