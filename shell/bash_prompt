@@ -1,13 +1,16 @@
 # vim: set ft=sh :
+
+source ~/.dotfiles/shell/git-prompt.sh
+
 # Color prompt
 function set_prompt ()
 {
-    local DEFAULT="\[\033[0;0m\]"
-    local CYAN="\[\033[0;36m\]"
-    local GREEN="\[\033[0;32m\]"
-    local RED="\[\033[0;31m\]"
+#    local reset="\[\033[0;0m\]"
+#    local cyan="\[\033[0;36m\]"
+#    local green="\[\033[0;32m\]"
+#    local red="\[\033[0;31m\]"
 
-    PS1="\u@\h${GRAY}:${CYAN}\w${DEFAULT} $ "
+    PS1='\u@\h:\[\033[0;36m\]\w\[\033[0;0m\] $(__git_ps1 "[%s] ")\$ '
 }
 
 set_prompt
