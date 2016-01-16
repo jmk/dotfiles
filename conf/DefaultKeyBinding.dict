@@ -1,0 +1,15 @@
+/* vim: set ft=cpp : */
+
+/*
+ * Save this file to: ~/Library/KeyBindings/DefaultKeyBinding.dict
+ *
+ * For more information:
+ * https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/EventOverview/TextDefaultsBindings/TextDefaultsBindings.html
+ */
+
+{
+    "~d" = "deleteWordForward:";
+    "^w" = "deleteWordBackward:";
+    "~f" = "moveWordForward:";
+    "~b" = "moveWordBackward:";
+}

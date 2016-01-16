@@ -1,0 +1,5 @@
+# ls with colors
+alias ls="ls -G"
+
+# Prompt when deleting files
+alias rm="rm -i"
