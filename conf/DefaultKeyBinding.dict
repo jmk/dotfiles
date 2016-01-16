@@ -8,6 +8,7 @@
  */
 
 {
+    "^u" = "deleteToBeginningOfLine:";
     "~d" = "deleteWordForward:";
     "^w" = "deleteWordBackward:";
     "~f" = "moveWordForward:";
