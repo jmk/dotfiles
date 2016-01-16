@@ -77,6 +77,10 @@ def deploy(testOnly):
     # Iterate over all files in the conf dir and figure out what needs to be
     # done.
     for filename in confFiles:
+        # Skip invisible files (e.g., vim swap files).
+        if (filename.startswith(".")):
+            continue
+
         src = os.path.join(confDir, filename)
 
         # Determine the destination path (where the symlink will be created)
@@ -120,18 +124,18 @@ def deploy(testOnly):
         print green("All dotfiles are up to date.")
 
     # Print an epilogue about additional actions that must be taken.
-    shellDir = os.path.join(rootDir, "shell")
-    shellFiles = os.listdir(shellDir)
-
-    if (shellFiles):
-        print ""
-        print "Note: Shell configuration files must be manually sourced:"
-        print ""
-
-        for f in shellFiles:
-            print "  " + os.path.join(shellDir, f)
-
-        print ""
+#    shellDir = os.path.join(rootDir, "shell")
+#    shellFiles = os.listdir(shellDir)
+#
+#    if (shellFiles):
+#        print ""
+#        print "Note: Shell configuration files must be manually sourced:"
+#        print ""
+#
+#        for f in shellFiles:
+#            print "  " + os.path.join(shellDir, f)
+#
+#        print ""
 
 if (__name__ == "__main__"):
     import argparse
