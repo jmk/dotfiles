@@ -10,6 +10,12 @@ pathOverrides = {
     "DefaultKeyBinding.dict": "~/Library/KeyBindings/DefaultKeyBinding.dict",
 }
 
+# Some files should only be symlinked on certain platforms. To restrict files
+# to a platform, add them to the dictionary below (e.g., "Linux", "Darwin").
+platformRestrictions = {
+    "DefaultKeyBinding.dict": ["Darwin"],
+}
+
 def findRootDir():
     # Assume this script lives in the bin dir, which is a direct child of the
     # root dotfiles directory.
@@ -46,6 +52,9 @@ def printSummary(linkFiles, errorFiles):
         for f in errorFiles:
             print "  " + red(f)
 
+    if (linkFiles or errorFiles):
+        print ""
+
 def makeSymlinks(linkFiles):
     print "Creating symlinks ..."
     print ""
@@ -65,6 +74,9 @@ def makeSymlinks(linkFiles):
         os.symlink(src, dst)
 
 def deploy(testOnly):
+    import platform
+    system = platform.system()
+
     homeDir = os.path.expanduser("~")
     rootDir = findRootDir()
 
@@ -79,6 +91,12 @@ def deploy(testOnly):
     for filename in confFiles:
         # Skip invisible files (e.g., vim swap files).
         if (filename.startswith(".")):
+            continue
+
+        # Skip files if the platform restrictions exclude the current
+        # platform.
+        if (filename in platformRestrictions
+            and system not in platformRestrictions[filename]):
             continue
 
         src = os.path.join(confDir, filename)
@@ -110,13 +128,11 @@ def deploy(testOnly):
 
         if (not testOnly):
             try:
-                print ""
                 raw_input("Press Enter to continue...")
 
                 # Create symlinks. Finally.
                 makeSymlinks(linkFiles)
             except KeyboardInterrupt:
-                print ""
                 print red("Aborted.")
                 exit(1)
     else:
