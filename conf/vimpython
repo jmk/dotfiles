@@ -134,6 +134,8 @@ def _upperCase(text):
     return text[0].upper() + text[1:]
 
 def _detectClassName(path):
+    # Note: hardcoded for convention at work:
+    #    /path/to/module/className.cpp -> ModuleClassName
     import os
     name = os.path.splitext(os.path.basename(path))[0]
     dir = os.path.basename(os.path.dirname(path))

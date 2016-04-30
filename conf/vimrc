@@ -191,6 +191,9 @@ if has("python")
     " ctrl-H switches between *.cpp and *.h (in the same dir)
     source ~/.vimpython
     map <C-H> :python switchHeader() <CR>
+
+    " tab key expands C++ method definitions for selected range
+    vmap <C-I> :python expandClassMethods() <CR>
 endif
 
 " Don't wrap files with lots of data by default
@@ -211,7 +214,6 @@ noremap <silent> <S-U> :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<C
 
 " Quick toggle hlsearch on tab key
 nmap <C-I> :set hlsearch! hlsearch? <CR>
-vmap <C-I> :python expandClassMethods() <CR>
 
 " Quick fix mode
 " XXX: how to change this dynamically?
