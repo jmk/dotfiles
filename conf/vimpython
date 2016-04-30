@@ -46,6 +46,71 @@ def switchHeader():
 
 #############################################################################
 
+def _detectCommentLeader(buffer):
+    leaders = {
+        "vim": "\"",
+
+        "c": "//",
+        "cpp": "//",
+        "cs": "//",
+        "objc": "//",
+        "java": "//",
+        "javascript": "//",
+        "sl": "//",
+
+        "sh": "#",
+        "make": "#",
+        "python": "#",
+        "rib": "#",
+
+        "tex": "%",
+
+        "lua": "--",
+
+        "name=SConscript": "#",
+    }
+
+    # Default value
+    leader = "#"
+
+    # Look up entry by filetype (detected by vim)
+    filetype = vim.eval("&ft")
+    if (filetype in leaders):
+        leader = leaders[filetype]
+
+    # If empty, fall back to file name; look for "name=FileName" entries
+    if (not leader):
+        key = "name=" + buffer.name
+        if key in leaders:
+            leader = leaders[key]
+
+    return leader
+
+def commentLines():
+    # Comments out lines in selected range. Comment leader is always placed at
+    # the beginning of the line.
+    r = vim.current.range
+    buffer = vim.current.buffer
+
+    commentLeader = _detectCommentLeader(buffer)
+
+    for i in range(r.start, r.end + 1):
+        buffer[i] = commentLeader + buffer[i]
+
+def uncommentLines():
+    # Uncomments lines in the selected range. Deletes the first comment leader
+    # found in the line.
+    r = vim.current.range
+    buffer = vim.current.buffer
+
+    commentLeader = _detectCommentLeader(buffer)
+
+    for i in range(r.start, r.end + 1):
+        if (buffer[i].startswith(commentLeader)):
+            buffer[i] = buffer[i][len(commentLeader):]
+
+#############################################################################
+
 def _removeKeywords(text, toRemove):
     tokens = text.split()
     tokens = [x for x in tokens if x not in set(toRemove)]
@@ -165,6 +230,7 @@ def _promptClassName(buffer):
     return className
 
 def expandClassMethods():
+    # Expands class method declarations in selected range.
     r = vim.current.range
     buffer = vim.current.buffer
 

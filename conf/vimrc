@@ -194,6 +194,10 @@ if has("python")
 
     " tab key expands C++ method definitions for selected range
     vmap <C-I> :python expandClassMethods() <CR>
+
+    " comment/uncomment
+    map <S-C> :python commentLines() <CR>
+    map <S-U> :python uncommentLines() <CR>
 endif
 
 " Don't wrap files with lots of data by default
@@ -201,16 +205,6 @@ au FileType rib,menva set nowrap ts=4
 
 " Support doxygen three-slash comments
 au FileType c,cpp set comments^=:///
-
-" Quick comment/uncomment (shift-c and shift-u)
-au FileType vim let b:comment_leader = '"'
-au FileType c,cpp,cs,java,objc,javascript,sl let b:comment_leader = '//'
-au FileType sh,make,python,rib let b:comment_leader = '#'
-au FileType tex let b:comment_leader = '%'
-au FileType lua let b:comment_leader = '--'
-au BufEnter SConscript let b:comment_leader = '#'
-noremap <silent> <S-C> :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR> 
-noremap <silent> <S-U> :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR> 
 
 " Quick toggle hlsearch on tab key
 nmap <C-I> :set hlsearch! hlsearch? <CR>
@@ -220,7 +214,7 @@ nmap <C-I> :set hlsearch! hlsearch? <CR>
 set makeprg=nice\ scons\ -u\ install
 map <C-B> :make <CR>
 
-" Setup C indentation optionss (cinoptions) as follows:
+" Setup C indentation options (cinoptions) as follows:
 "     - Wrap arguments to match location of opening parens: (0
 "     - Indent argument lists that start on a separate line: Ws (shiftwidth)
 "     - Don't indent C++ class scope declarations: g0
