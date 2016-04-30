@@ -4,13 +4,13 @@ python << EOF
 
 import os, sys, vim
 
-_headers = ["h", "hpp", "hxx"]
-_sources = ["c", "cpp", "cxx", "cc", "m", "mm"]
-
 # A very simple function that switches between headers and source files.
 # Supports common C/C++ and ObjC/C++ file extensions, and always looks in the
 # same directory as the current file.
 def switchHeader():
+    headers = ["h", "hpp", "hxx"]
+    sources = ["c", "cpp", "cxx", "cc", "m", "mm"]
+
     path = vim.current.buffer.name
 
     if (not path):
@@ -22,10 +22,10 @@ def switchHeader():
     extension = extension.replace(".", "")
 
     # Try to figure out what we're looking for.
-    if (extension in _headers): 
-        targetExtensions = _sources
-    elif (extension in _sources):
-        targetExtensions = _headers
+    if (extension in headers): 
+        targetExtensions = sources
+    elif (extension in sources):
+        targetExtensions = headers
     else:
         print "No counterpart for .%s files" % extension
         return
@@ -43,5 +43,151 @@ def switchHeader():
 
     print >> sys.stderr, \
           "No counterpart found for: %s" % vim.current.buffer.name
+
+#############################################################################
+
+def _removeKeywords(text, toRemove):
+    tokens = text.split()
+    tokens = [x for x in tokens if x not in set(toRemove)]
+    return " ".join(tokens)
+
+def _removeAssignment(text):
+    # Strip out the right-hand side of an assignment (e.g., default argument
+    # or pure virtual method suffix).
+    i = text.find("=")
+    if (i != -1):
+        text = text[:i]
+    return text
+
+def _cleanWhitespace(text):
+    return " ".join(text.split())
+
+def _parseParams(text):
+    text = _cleanWhitespace(text)
+    params = []
+
+    # Split on commas, except those inside matched angle brackets (i.e.,
+    # template type declarations).
+    current = ""
+    bracketDepth = 0
+
+    for x in text:
+        if x == "<":
+            bracketDepth += 1
+        elif x == ">":
+            bracketDepth -= 1
+
+        if (bracketDepth < 0):
+            print "Warning: mismatched brackets <>"
+            bracketDepth = 0
+
+        if (x == "," and bracketDepth == 0):
+            if (current):
+                params.append(current)
+                current = ""
+        else:
+            current += x
+
+    if (current):
+        params.append(current)
+
+    def format(p):
+        # Remove default arguments and whitespace.
+        return _cleanWhitespace(_removeAssignment(p))
+
+    return [format(p) for p in params]
+
+def _parseMethodSignature(text):
+    # Yes, we're using regular expressions ... don't judge.
+    import re
+    m = re.compile("(.*?)\s*([^\s]*?)\((.*)\)(.*)").match(text)
+    if (m):
+        prefix, methodName, params, suffix = m.groups()
+
+        prefix = _removeKeywords(prefix, ["virtual", "static"])
+
+        suffix = _removeKeywords(suffix, ["override"])
+        suffix = _removeAssignment(suffix)
+        suffix = _cleanWhitespace(suffix)
+
+        paramList = _parseParams(params)
+
+        return prefix, methodName, paramList, suffix
+
+def _expandMethodDeclaration(className, text):
+    prefix, methodName, paramList, suffix = _parseMethodSignature(text)
+
+    params = ", ".join(paramList)
+
+    from string import Template
+    template = Template("$className::$methodName($params) $suffix")
+    result = template.substitute(locals())
+
+    if (len(result) > 80):
+        params = ",".join(["\n    " + x for x in paramList])
+        result = template.substitute(locals())
+
+    return "\n".join([prefix, result, "{", "}"])
+
+def _upperCase(text):
+    # Capitalize first letter only, preserving the rest of the string
+    return text[0].upper() + text[1:]
+
+def _detectClassName(path):
+    import os
+    name = os.path.splitext(os.path.basename(path))[0]
+    dir = os.path.basename(os.path.dirname(path))
+    return _upperCase(dir) + _upperCase(name)
+
+def _promptClassName(buffer):
+    # Squirrel away the class name for each file.
+    global _lastClassNames
+
+    if not "_lastClassNames" in globals():
+        _lastClassNames = {}
+
+    className = None
+    if (buffer.name in _lastClassNames):
+        className = _lastClassNames[buffer.name]
+
+    if (not className):
+        className = _detectClassName(buffer.name)
+
+    if (not className):
+        # User aborted (hit esc)
+        return
+
+    className = vim.eval("input('Class name: ', '%s')" % className)
+    _lastClassNames[buffer.name] = className
+
+    return className
+
+def expandClassMethods():
+    r = vim.current.range
+    buffer = vim.current.buffer
+
+    # Join text into a contiguous buffer
+    text = "".join(buffer[r.start:r.end+1])
+
+    # Split by semicolon to separate method declarations
+    text = text.split(";")
+
+    className = _promptClassName(vim.current.buffer)
+
+    if (not className):
+        # User aborted
+        return
+
+    output = []
+    for line in text:
+        if (line):
+            output.append(_expandMethodDeclaration(className, line))
+
+    # Normalize output by lines
+    output = "\n\n".join(output).split("\n")
+
+    # Write output to selection
+    del buffer[r.start:r.end+1]
+    buffer.append(output, r.start)
 
 EOF

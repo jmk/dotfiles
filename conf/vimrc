@@ -186,13 +186,11 @@ else
     autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
 endif
 
-" ctrl-H switches between *.cpp and *.h (in the same dir)
+" Custom commands implemented in python
 if has("python")
-    " a fancier version implemented in python
+    " ctrl-H switches between *.cpp and *.h (in the same dir)
     source ~/.vimpython
     map <C-H> :python switchHeader() <CR>
-else
-    map <C-H> :e %:p:s/.h$/.__EXTN__/:s/.cpp$/.h/:s/.__EXTN__$/.cpp/<CR>
 endif
 
 " Don't wrap files with lots of data by default
@@ -212,7 +210,8 @@ noremap <silent> <S-C> :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR
 noremap <silent> <S-U> :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR> 
 
 " Quick toggle hlsearch on tab key
-map <C-I> :set hlsearch! hlsearch? <CR>
+nmap <C-I> :set hlsearch! hlsearch? <CR>
+vmap <C-I> :python expandClassMethods() <CR>
 
 " Quick fix mode
 " XXX: how to change this dynamically?
@@ -224,6 +223,9 @@ map <C-B> :make <CR>
 "     - Indent argument lists that start on a separate line: Ws (shiftwidth)
 "     - Don't indent C++ class scope declarations: g0
 set cino=(0,Ws,g0
+
+" Don't flag curly braces inside of parens as errors in C-style syntax
+let c_no_curly_error=1
 
 " Automatically insert closing parens/brackets
 "inoremap { {<CR>}<ESC>O
