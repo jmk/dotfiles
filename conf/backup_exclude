@@ -1,18 +1,18 @@
 ####################################
 # exclusion list for rsync backups #
 ####################################
-/Users/*/Library/Logs
+/Users/*/Library/Logs/
 **/Cache/**
 **/Caches/**
 **/tmp/**
-*/.Trash
-*/.Trashes
+**/.Trash
+**/.Trashes
 .Spotlight-*/
-.MobileBackups
+.MobileBackups/
 .fseventsd/
 /.DocumentRevisions-V100/*
 /Network/*
-/Previous\ Systems.localized
+/Previous Systems.localized/
 /afs/*
 /automount/*
 /cdrom/*
@@ -26,3 +26,7 @@
 /private/var/spool/postfix/*
 /private/var/vm/*
 /proc/*
+* Previews.lrdata
+/Applications/Final Cut Pro.app/
+/Applications/Xcode.app/
+/Applications/GarageBand.app/
