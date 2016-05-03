@@ -218,7 +218,8 @@ map <C-B> :make <CR>
 "     - Wrap arguments to match location of opening parens: (0
 "     - Indent argument lists that start on a separate line: Ws (shiftwidth)
 "     - Don't indent C++ class scope declarations: g0
-set cino=(0,Ws,g0
+"     - Align case statements with braces: l1
+set cino=(0,Ws,g0,l1
 
 " Don't flag curly braces inside of parens as errors in C-style syntax
 let c_no_curly_error=1
