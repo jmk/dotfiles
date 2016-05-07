@@ -2,7 +2,13 @@
 " python stuff for vim
 python << EOF
 
+from __future__ import print_function
 import os, sys, vim
+
+def error(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+#############################################################################
 
 # A very simple function that switches between headers and source files.
 # Supports common C/C++ and ObjC/C++ file extensions, and always looks in the
@@ -14,7 +20,7 @@ def switchHeader():
     path = vim.current.buffer.name
 
     if (not path):
-        print >> sys.stderr, "No current file"
+        error("No current file")
         return
 
     # Find the file extension (without the period).
@@ -27,7 +33,7 @@ def switchHeader():
     elif (extension in sources):
         targetExtensions = headers
     else:
-        print "No counterpart for .%s files" % extension
+        error("No counterpart for .%s files" % extension)
         return
 
     # Try each target extension until we find a file that exists.
@@ -41,8 +47,7 @@ def switchHeader():
             # Success!
             return
 
-    print >> sys.stderr, \
-          "No counterpart found for: %s" % vim.current.buffer.name
+    error("No counterpart found for: %s" % vim.current.buffer.name)
 
 #############################################################################
 
@@ -143,7 +148,7 @@ def _parseParams(text):
             bracketDepth -= 1
 
         if (bracketDepth < 0):
-            print "Warning: mismatched brackets <>"
+            error("Warning: mismatched brackets <>")
             bracketDepth = 0
 
         if (x == "," and bracketDepth == 0):
@@ -185,8 +190,11 @@ def _expandMethodDeclaration(className, text):
     params = ", ".join(paramList)
 
     from string import Template
-    template = Template("$className::$methodName($params) $suffix")
+    template = Template("$className::$methodName($params)")
     result = template.substitute(locals())
+
+    if (suffix):
+        result += " " + suffix
 
     if (len(result) > 80):
         params = ",".join(["\n    " + x for x in paramList])
@@ -230,6 +238,11 @@ def _promptClassName(buffer):
     return className
 
 def expandClassMethods():
+    filetype = vim.eval("&ft")
+    if (not filetype in ["c", "cpp", "objc", "objcpp"]):
+        error("Unsupported filetype: %s" % filetype)
+        return
+
     # Expands class method declarations in selected range.
     r = vim.current.range
     buffer = vim.current.buffer
@@ -248,6 +261,7 @@ def expandClassMethods():
 
     output = []
     for line in text:
+        line = line.strip()
         if (line):
             output.append(_expandMethodDeclaration(className, line))
 
