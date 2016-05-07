@@ -22,6 +22,16 @@ set viminfo='20,\"50	" read/write a .viminfo file, don't store more than
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 
+" Enable cursorline only in active window
+augroup CursorLineOnlyInActiveWindow
+  autocmd!
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
+
+  " Hack to make "todo" text have priority over the cursorline
+  autocmd Syntax * call matchadd('Todo', '\W\zs\(TODO\|FIXME\|XXX\|BUG\|HACK\)', -100)
+augroup END
+
 " Suffixes that get lower priority when doing tab completion for filenames.
 " These are files we are not likely to want to edit or read.
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -102,7 +112,8 @@ au BufEnter   *.as :set ft=javascript
 au BufEnter   *.fs :set ft=glsl
 au BufEnter   *.sl :set ft=sl
 au BufEnter   *.pde :set ft=c   " for arduino
-au BufEnter   *.markdown,*.md :set ft=markdown tw=0
+au BufEnter   *.markdown,*.md :set ft=markdown tw=0 wrap lbr nolist
+au BufEnter   *.txt :set tw=0 wrap lbr nolist
 au BufEnter   *.rib :set ts=4
 au BufEnter   *.slim :set ft=tcl
 au BufEnter   *.pro :set ft=confg   " for qmake project files
@@ -141,6 +152,12 @@ syntax on
 set list
 set lcs=tab:,.,trail:.
 
+" If multi-byte is available, use vertical line char for vertical splits
+if (has("multi_byte"))
+    set fcs=vert:║,fold:-
+    set fcs=vert:│,fold:-
+endif
+
 " Use spaces instead of tab characters
 set expandtab
 set tabstop=8
@@ -165,6 +182,12 @@ hi Todo ctermfg=red ctermbg=yellow cterm=bold
 
 " Make visible whitespace bold
 hi SpecialKey ctermfg=blue cterm=bold
+
+" Vertical split white on black
+hi VertSplit	ctermbg=white ctermfg=black
+
+" Cursor line no style
+hi CursorLine	cterm=none
 
 " Shortcuts for tabs
 map <C-N> :tabn <CR>
