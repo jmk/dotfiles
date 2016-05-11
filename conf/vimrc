@@ -154,6 +154,7 @@ set lcs=tab:,.,trail:.
 
 " If multi-byte is available, use vertical line char for vertical splits
 if (has("multi_byte"))
+    set encoding=utf-8
     set fcs=vert:║,fold:-
     set fcs=vert:│,fold:-
 endif
