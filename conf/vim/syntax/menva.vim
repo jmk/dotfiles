@@ -18,6 +18,7 @@ endif
 
 " Menva file header
 syn match menvaVersion "#menva.*$"
+syn match menvaVersion "#usda.*$"
 
 " Primary keywords
 syn keyword menvaKeyword def over
