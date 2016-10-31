@@ -106,7 +106,7 @@ map <down> gj
 
 au BufEnter   *.c,*.h,*.m,*.cpp :set cindent shiftwidth=4
 au BufEnter   *.m,*.mm :set ft=objc
-au BufEnter   *.menva*  :set ft=menva
+au BufEnter   *.menva*,*.usd,*.usda  :set ft=menva
 au BufEnter   *.ypp  :set ft=lex
 au BufEnter   *.as :set ft=javascript
 au BufEnter   *.fs :set ft=glsl
