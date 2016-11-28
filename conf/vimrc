@@ -124,16 +124,16 @@ if (has("mac"))
 endif
 
 " For some reason, we use this extension for python modules?
-au BufEnter   *.pym :set ft=python
+au BufEnter   *.pym :setlocal ft=python
 
 " Certain files want tabs
-au BufEnter   tmp.* :set noexpandtab sts=8    " perforce change spec
-au BufEnter   *.pbxproj :set noexpandtab sts=8
-au BufEnter   Makefile :set noexpandtab sts=8
+au BufEnter   tmp.* :setlocal noexpandtab sts=8    " perforce change spec
+au BufEnter   *.pbxproj :setlocal noexpandtab sts=8
+au BufEnter   Makefile :setlocal noexpandtab sts=8
 
 " Super hack for some files
-au BufEnter   *Proto_h,*Proto_cpp :set ft=cpp    " Gf proto files
-au BufEnter   *.sip :set ft=cpp                  " sip
+au BufEnter   *Proto_h,*Proto_cpp :setlocal ft=cpp    " Gf proto files
+au BufEnter   *.sip :setlocal ft=cpp                  " sip
 
 " Set some format options
 "   c: auto-wrap commens
@@ -225,10 +225,10 @@ if has("python")
 endif
 
 " Don't wrap files with lots of data by default
-au FileType rib,menva set nowrap ts=4
+au FileType rib,menva setlocal nowrap ts=4
 
 " Support doxygen three-slash comments
-au FileType c,cpp set comments^=:///
+au FileType c,cpp setlocal comments^=:///
 
 " Quick toggle hlsearch on tab key
 nmap <C-I> :set hlsearch! hlsearch? <CR>
