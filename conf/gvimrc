@@ -15,7 +15,7 @@ set guitablabel=%n\ %t\ %m
 hi Comment gui=italic
 
 if (has("mac"))
-    set guifont=Consolas:h14
+    set guifont=InputMono:h13
     set anti
 else
     set guifont=Consolas\ 11
