@@ -106,7 +106,7 @@ map <down> gj
 
 au BufEnter   *.c,*.h,*.m,*.cpp :set cindent shiftwidth=4
 au BufEnter   *.m,*.mm :set ft=objc
-au BufEnter   *.menva*  :set ft=menva
+au BufEnter   *.menva*,*.usd,*.usda  :set ft=menva
 au BufEnter   *.ypp  :set ft=lex
 au BufEnter   *.as :set ft=javascript
 au BufEnter   *.fs :set ft=glsl
@@ -127,13 +127,13 @@ endif
 au BufEnter   SConscript,SConstruct :set ft=python
 
 " Certain files want tabs
-au BufEnter   tmp.* :set noexpandtab sts=8    " perforce change spec
-au BufEnter   *.pbxproj :set noexpandtab sts=8
-au BufEnter   Makefile :set noexpandtab sts=8
+au BufEnter   tmp.* :setlocal noexpandtab sts=8    " perforce change spec
+au BufEnter   *.pbxproj :setlocal noexpandtab sts=8
+au BufEnter   Makefile :setlocal noexpandtab sts=8
 
 " Super hack for some files
-au BufEnter   *Proto_h,*Proto_cpp :set ft=cpp    " Gf proto files
-au BufEnter   *.sip :set ft=cpp                  " sip
+au BufEnter   *Proto_h,*Proto_cpp :setlocal ft=cpp    " Gf proto files
+au BufEnter   *.sip :setlocal ft=cpp                  " sip
 
 " Set some format options
 "   c: auto-wrap commens
@@ -154,6 +154,7 @@ set lcs=tab:,.,trail:.
 
 " If multi-byte is available, use vertical line char for vertical splits
 if (has("multi_byte"))
+    set encoding=utf-8
     set fcs=vert:║,fold:-
     set fcs=vert:│,fold:-
 endif
@@ -224,10 +225,10 @@ if has("python")
 endif
 
 " Don't wrap files with lots of data by default
-au FileType rib,menva set nowrap ts=4
+au FileType rib,menva setlocal nowrap ts=4
 
 " Support doxygen three-slash comments
-au FileType c,cpp set comments^=:///
+au FileType c,cpp setlocal comments^=:///
 
 " Quick toggle hlsearch on tab key
 nmap <C-I> :set hlsearch! hlsearch? <CR>

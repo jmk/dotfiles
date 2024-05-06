@@ -37,27 +37,27 @@ def cyan(msg):
 
 def printSummary(linkFiles, errorFiles):
     if (linkFiles):
-        print ""
-        print "Files to be symlinked:"
-        print ""
+        print("")
+        print("Files to be symlinked:")
+        print("")
 
         for _, f in linkFiles:
-            print "  " + cyan(f)
+            print("  " + cyan(f))
 
     if (errorFiles):
-        print ""
-        print "Files that exist and will not be overwritten:"
-        print ""
+        print("")
+        print("Files that exist and will not be overwritten:")
+        print("")
 
         for f in errorFiles:
-            print "  " + red(f)
+            print("  " + red(f))
 
     if (linkFiles or errorFiles):
-        print ""
+        print("")
 
 def makeSymlinks(linkFiles):
-    print "Creating symlinks ..."
-    print ""
+    print("Creating symlinks ...")
+    print("")
 
     # Note: src is the source file, dst is where the symlink will go.
     for src, dst in linkFiles:
@@ -70,7 +70,7 @@ def makeSymlinks(linkFiles):
         if (not os.path.isdir(parentDir)):
             os.makedirs(parentDir)
 
-        print "  %s -> %s" % (src, dst)
+        print("  %s -> %s" % (src, dst))
         os.symlink(src, dst)
 
 def deploy(testOnly):
@@ -128,16 +128,16 @@ def deploy(testOnly):
 
         if (not testOnly):
             try:
-                raw_input("Press Enter to continue...")
+                input("Press Enter to continue...")
 
                 # Create symlinks. Finally.
                 makeSymlinks(linkFiles)
             except KeyboardInterrupt:
-                print red("Aborted.")
+                print(red("Aborted."))
                 exit(1)
     else:
         # No updates to make.
-        print green("All dotfiles are up to date.")
+        print(green("All dotfiles are up to date."))
 
     # Print an epilogue about additional actions that must be taken.
 #    shellDir = os.path.join(rootDir, "shell")
