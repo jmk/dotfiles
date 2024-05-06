@@ -25,6 +25,7 @@
 /private/var/run/*
 /private/var/spool/postfix/*
 /private/var/vm/*
+/private/var/folders/*
 /proc/*
 * Previews.lrdata
 /Applications/Final Cut Pro.app/
