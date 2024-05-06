@@ -23,3 +23,8 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool YES
 
 # Disable iOS-style power chime sound (e.g., on MacBook 12")
 defaults write com.apple.PowerChime ChimeOnAllHardware -bool false
+
+# Don't save recipients of mail (these addresses are synced between
+# computers, even if they don't share relevant accounts, e.g., work and
+# personal machines)
+defaults write com.apple.mail SuppressAddressHistory -bool true
