@@ -211,17 +211,17 @@ else
 endif
 
 " Custom commands implemented in python
-if has("python")
+if has("python3")
     " ctrl-H switches between *.cpp and *.h (in the same dir)
     source ~/.vimpython
-    map <C-H> :python switchHeader() <CR>
+    map <C-H> :python3 switchHeader() <CR>
 
     " tab key expands C++ method definitions for selected range
-    vmap <C-I> :python expandClassMethods() <CR>
+    vmap <C-I> :python3 expandClassMethods() <CR>
 
     " comment/uncomment
-    map <S-C> :python commentLines() <CR>
-    map <S-U> :python uncommentLines() <CR>
+    map <S-C> :python3 commentLines() <CR>
+    map <S-U> :python3 uncommentLines() <CR>
 endif
 
 " Don't wrap files with lots of data by default
