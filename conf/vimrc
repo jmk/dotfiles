@@ -123,8 +123,8 @@ if (has("mac"))
     au BufEnter   *.h,*.m,*.mm,*.pch :set ft=objcpp
 endif
 
-" For some reason, we use this extension for python modules?
-au BufEnter   *.pym :set ft=python
+" SCons files
+au BufEnter   SConscript,SConstruct :set ft=python
 
 " Certain files want tabs
 au BufEnter   tmp.* :set noexpandtab sts=8    " perforce change spec
