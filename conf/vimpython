@@ -1,6 +1,6 @@
 " vim: ft=python
 " python stuff for vim
-python << EOF
+python3 << EOF
 
 from __future__ import print_function
 import os, sys, vim
