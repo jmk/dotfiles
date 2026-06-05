@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 
 # By default, all files in the conf directory will be symlinked directly into
